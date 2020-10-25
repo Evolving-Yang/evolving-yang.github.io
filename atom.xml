@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://evolving-yang.github.io/</id>
     <title>Evolving</title>
-    <updated>2020-10-25T05:06:55.110Z</updated>
+    <updated>2020-10-25T06:00:00.593Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://evolving-yang.github.io/"/>
     <link rel="self" href="https://evolving-yang.github.io/atom.xml"/>
@@ -10,6 +10,37 @@
     <logo>https://evolving-yang.github.io/images/avatar.png</logo>
     <icon>https://evolving-yang.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Evolving</rights>
+    <entry>
+        <title type="html"><![CDATA[需要复习的东西（更]]></title>
+        <id>https://evolving-yang.github.io/post/xu-yao-fu-xi-de-dong-xi-geng/</id>
+        <link href="https://evolving-yang.github.io/post/xu-yao-fu-xi-de-dong-xi-geng/">
+        </link>
+        <updated>2020-10-25T05:59:38.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>按重要程度划分</strong></p>
+<h1 id="5重点复习">5（重点复习)</h1>
+<p>快速幂，求逆元（4种，代码已全写）</p>
+<h1 id="4">4</h1>
+<p>广搜，求逆序对，导弹拦截  <strong><a href="https://www.cnblogs.com/KatouKatou/p/9818175.html">exgcd</a></strong></p>
+<h1 id="3">3</h1>
+<h1 id="2">2</h1>
+<h1 id="1">1</h1>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[近期题目]]></title>
+        <id>https://evolving-yang.github.io/post/jin-qi-ti-mu/</id>
+        <link href="https://evolving-yang.github.io/post/jin-qi-ti-mu/">
+        </link>
+        <updated>2020-10-25T05:59:10.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="一线性dp">一.线性DP</h1>
+<h2 id="p1020-导弹拦截"><a href="https://www.luogu.com.cn/problem/P1020">P1020 导弹拦截</a></h2>
+<h2 id="p1233-木棍加工"><a href="https://www.luogu.com.cn/problem/P1233">P1233 木棍加工</a></h2>
+<p>这两道题挺相似，还需复习</p>
+<h1 id="二有趣的题目">二.有趣的题目</h1>
+<h2 id="p2804"><a href="https://www.luogu.com.cn/problem/P2804">P2804</a></h2>
+<p>可参考第一篇题解</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hey！My new blog]]></title>
         <id>https://evolving-yang.github.io/post/Top/</id>
