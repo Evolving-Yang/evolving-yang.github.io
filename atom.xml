@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://evolving-yang.github.io/</id>
+    <title>Evolving</title>
+    <updated>2020-10-25T05:06:55.110Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://evolving-yang.github.io/"/>
+    <link rel="self" href="https://evolving-yang.github.io/atom.xml"/>
+    <subtitle>一名OIer</subtitle>
+    <logo>https://evolving-yang.github.io/images/avatar.png</logo>
+    <icon>https://evolving-yang.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2020, Evolving</rights>
+    <entry>
+        <title type="html"><![CDATA[Hey！My new blog]]></title>
+        <id>https://evolving-yang.github.io/post/Top/</id>
+        <link href="https://evolving-yang.github.io/post/Top/">
+        </link>
+        <updated>2020-10-25T04:37:44.000Z</updated>
+        <content type="html"><![CDATA[<p>##欢迎来到YCF的小站~<br>
+刚刚搭建没有什么文章，估计会经常更新一下<br>
+作为一名OIer，主要内容肯定与竞赛有关啦 <s>（但似乎要被迫退役了）</s><br>
+可能也会有学习期间的感想 <s>（人生哲理</s></p>
+<p>这个网站没怎么推，所以看到的都是朋友~</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[题解 P1967 【货车运输】]]></title>
+        <id>https://evolving-yang.github.io/post/answer-P1967/</id>
+        <link href="https://evolving-yang.github.io/post/answer-P1967/">
+        </link>
+        <updated>2020-10-25T04:32:54.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="思路">思路</h1>
+<p>1.kruskal建最大生成树</p>
+<p>2.dfs维护两个数组，一个fa[i][k]存最近公共祖先，一个s[i][k]存路径最小值</p>
+<p>3.跑lca 输出</p>
+<h2 id="一步一步分开看">一步一步分开看</h2>
+<h3 id="第一步">第一步</h3>
+<p>首先，为什么要用kruskal建最大生成树呢? 因为题目让我们求</p>
+<pre><code>  每辆车在不超过车辆限重的情况下，最多能运多重的货物
+</code></pre>
+<p>简化题意就是：让路径上最小值最大。</p>
+<p>且因为题目输入给出的可能是图，所以我们可以存图并用kruskal构造最大生成树</p>
+<h4 id="kruskal代码">kruskal代码</h4>
+<pre><code class="language-cpp">int f[500010];		//并查集存祖先数组
+Post e[500010];		//存图
+vector&lt;Post2&gt; t[500010];//存树
+
+inline int find(int x)
+{
+	if(f[x] == x)	return x;
+	return f[x] = find(f[x]);
+}
+
+void bing(int x,int y)
+{
+	int a = find(x), b = find(y);
+	if(a == b)	return;
+	else		f[a] = b;
+}
+
+void kruskal()
+{
+	for(int i=1;i&lt;=n;i++)
+	{
+		f[i] = i;
+	}
+	sort(e+1,e+1+m,cmp);
+	for(int i=1;i&lt;=m;i++)
+	{
+		if(find(e[i].from) != find(e[i].to))
+		{
+			f[find(e[i].from)] = find(e[i].to);
+			
+			t[e[i].from].push_back(Post2(e[i].to,e[i].w));
+			t[e[i].to].push_back(Post2(e[i].from,e[i].w));
+		}
+	}
+	return ;
+}
+</code></pre>
+<h3 id="第二步">第二步</h3>
+<p>因为我们已经用kruskal得到了最大生成树，这时点到点的距离是唯一的，所以我们可以跑dfs维护所需信息，为之后的lca做准备</p>
+<p>平时我们做lca之需要维护fa数组，fa[i][j]存放 i位置的2^j祖先。现在因为我们要保存路径上的最小值，所以还需要维护s数组，s[i][j]存放 i到i的2^j祖先间的最小值。</p>
+<p>画个图思考一下。</p>
+<figure data-type="image" tabindex="1"><img src="https://cdn.luogu.com.cn/upload/image_hosting/aaksr1l2.png" alt="" loading="lazy"></figure>
+<p>根据这个图不难推得</p>
+<pre><code>s[u][i] = min(s[u][i-1],s[fa[u][i-1]][i-1]);
+</code></pre>
+<h4 id="dfs代码">dfs代码</h4>
+<pre><code class="language-cpp">int dep[500010];	//深度
+int fa[500010][30];
+int s[500010][30];
+
+void dfs(int u,int last)	//u是当前点，last是u的父亲
+{
+	//cout &lt;&lt; u &lt;&lt; ' ' &lt;&lt; last &lt;&lt; endl;
+	//cout &lt;&lt; 1 &lt;&lt; endl;
+	dep[u] = dep[last]+1;
+	fa[u][0] = last;
+
+	cout &lt;&lt; u &lt;&lt; ' ' &lt;&lt; last &lt;&lt; endl;
+	for(int i=1;(1&lt;&lt;i)&lt;dep[u];i++)
+	{
+		s[u][i] = min(s[u][i-1],s[fa[u][i-1]][i-1]);//更新s[u][i]
+		fa[u][i] = fa[fa[u][i-1]][i-1];		    //更新fa[u][i]
+	}
+	
+	for(int i=0;i&lt;t[u].size();i++)
+	{
+		if(t[u][i].to != last)
+		{
+			s[t[u][i].to][0] = t[u][i].w;	//s[x][0]的值永远是x到自己父亲的距离
+			dfs(t[u][i].to,u);
+		}
+	}
+}
+</code></pre>
+<h3 id="第三步">第三步</h3>
+<p>咱们已经通过dfs存储了fa数组和s数组，先一步就是我们的lca了，我们可以通过求 两点间的最近公共祖先 来求 路径上的最小值</p>
+<p>这里要注意，不管在什么时候移动，都要修改最小值。</p>
+<h4 id="看下面这张图">看下面这张图</h4>
+<figure data-type="image" tabindex="2"><img src="https://cdn.luogu.com.cn/upload/image_hosting/6xje92wv.png" alt="" loading="lazy"></figure>
+<p>我们要求x到y到最小值</p>
+<figure data-type="image" tabindex="3"><img src="https://cdn.luogu.com.cn/upload/image_hosting/d6jj4cv7.png" alt="" loading="lazy"></figure>
+<p>我们发现x和y不在同一层上，所以我们要将x想上移动，同时更新最小值</p>
+<figure data-type="image" tabindex="4"><img src="https://cdn.luogu.com.cn/upload/image_hosting/39fv4o02.png" alt="" loading="lazy"></figure>
+<p>x和y在同一层上之后，我们将x和y同时向上移动，更新最小值</p>
+<p>所以就显而易见了：</p>
+<pre><code class="language-cpp">int lca(int x,int y)
+{
+	int Min = 0x3f3f3f3f;
+	if(dep[x] &lt; dep[y])	swap(x,y);//x的深度一定要大于y的深度
+	while(dep[x]!=dep[y])
+	{
+		Min = min(Min,s[x][lg[dep[x]-dep[y]]]);//x向上跳，更新最小值
+		x = fa[x][lg[dep[x]-dep[y]]];
+	}
+	if(x==y) return Min;
+	for(int i=lg[dep[x]];i&gt;=0;i--)
+	{
+		if(fa[x][i]!=fa[y][i])
+		{
+        		//同时向上跳，更新最小值
+			Min = min(Min,s[x][i]);
+			Min = min(Min,s[y][i]);
+			
+			x = fa[x][i];
+			y = fa[y][i];
+		}
+	}
+	return min(Min,min(s[x][0],s[y][0]));
+}
+</code></pre>
+<h3 id="主函数">主函数</h3>
+<p>这里要注意，我们用kruskal处理完后有可能是森林，所以要for循环跑dfs</p>
+<pre><code class="language-cpp">int main(void)
+{
+	scanf(&quot;%d%d&quot;,&amp;n,&amp;m);
+	
+	for(int i=2;i&lt;=n;i++)	//预处理lg函数
+	    lg[i]=lg[i-1]+((1&lt;&lt;lg[i-1])==(i&gt;&gt;1));
+	    
+	for(int i=1;i&lt;=m;i++)
+		scanf(&quot;%d%d%d&quot;,&amp;e[i].from,&amp;e[i].to,&amp;e[i].w);	//存图
+
+	kruskal();	//跑kruskal
+	
+	for(int i=1;i&lt;=n;i++)		//此处因为可能是森林，所以要循环跑dfs
+	{
+		if(!dep[i])	dfs(i,0);
+	}
+	
+	int k,qi,zhong; 
+	scanf(&quot;%d&quot;,&amp;k);
+	
+	for(int i=1;i&lt;=k;i++)
+	{
+		scanf(&quot;%d%d&quot;,&amp;qi,&amp;zhong);
+    		//如果在一个集合中跑lca,否则没有路径连接，输出-1
+		if(find(qi) == find(zhong))
+			printf(&quot;%d\n&quot;,lca(qi,zhong));
+		else
+			printf(&quot;-1\n&quot;);
+	}
+	return 0;
+}
+
+</code></pre>
+<p>这样程序就OK了！总体来说，只要看出了最大生成树，这个题还是比较简单的！</p>
+]]></content>
+    </entry>
+</feed>
