@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://evolving-yang.github.io/</id>
     <title>Evolving</title>
-    <updated>2020-10-25T07:37:53.870Z</updated>
+    <updated>2020-10-26T09:20:08.485Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://evolving-yang.github.io/"/>
     <link rel="self" href="https://evolving-yang.github.io/atom.xml"/>
@@ -10,6 +10,40 @@
     <logo>https://evolving-yang.github.io/images/avatar.png</logo>
     <icon>https://evolving-yang.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Evolving</rights>
+    <entry>
+        <title type="html"><![CDATA[A]]></title>
+        <id>https://evolving-yang.github.io/post/a/</id>
+        <link href="https://evolving-yang.github.io/post/a/">
+        </link>
+        <updated>2020-10-26T02:32:49.000Z</updated>
+        <content type="html"><![CDATA[<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+string s;
+int Min = 1e9;
+int uf[1000010];
+int df[1000010];
+
+int main(void)
+{
+	cin &gt;&gt; s;
+	for(int i=0;i&lt;s.size();i++)
+		uf[i] = uf[i-1]+(s[i]-'0');
+	for(int i=s.size()-1;i&gt;=0;i--)
+		df[i] = df[i+1]+(!(s[i]-'0'));
+	Min = min(Min,df[0]);
+	for(int i=1;i&lt;s.size();i++)
+		Min = min(Min,uf[i-1]+df[i]);
+	Min = min(Min,uf[s.size()-1]);
+	cout &lt;&lt; Min &lt;&lt; endl;
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[需要复习的东西（更]]></title>
         <id>https://evolving-yang.github.io/post/xu-yao-fu-xi-de-dong-xi-geng/</id>
